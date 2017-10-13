@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Application context definition. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/jdbc
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       default-autowire="byName" default-lazy-init="true">
+
+
+   
+   	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"  destroy-method="close">
+		<property name="url" value="${caps.db.url}" />
+		<property name="username" value="${caps.db.username}" />
+		<property name="password" value="${caps.db.password}" />
+		
+		 <!-- 初始化连接数量 -->
+		<property name="connectionProperties" value="${druid.connectionProperties}" />
+		<!-- 初始化连接数量-->
+		<property name="initialSize" value="${druid.initialSize}" />
+		<!-- 最大连接数 -->
+		<property name="maxActive" value="${druid.maxActive}" />
+		<!-- 最小空闲连接数 -->
+		<property name="minIdle" value="${druid.minIdle}" />
+		<!-- 获取连接等待超时的时间，单位是毫秒 -->
+		<property name="maxWait" value="${druid.maxWait}" />
+		<property name="testWhileIdle" value="${druid.testWhileIdle}" />
+		<property name="testOnBorrow" value="${druid.testOnBorrow}" />
+		<property name="testOnReturn" value="${druid.testOnReturn}" />
+		
+		<!-- 配置一个连接（不检查最小连接数以下的连接）在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+		<!-- 配置一个连接在池中最大生存的时间，单位是毫秒 -->
+		<property name="maxEvictableIdleTimeMillis" value="${druid.maxEvictableIdleTimeMillis}" />
+		<!-- 间隔多久才进行一次空闲连接的检测，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+		<property name="logAbandoned" value="${druid.logAbandoned}" />
+		<property name="removeAbandoned" value="${druid.removeAbandoned}" />
+		<property name="removeAbandonedTimeoutMillis" value="${druid.removeAbandonedTimeoutMillis}" />
+		<property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+		<property name="filters" value="${druid.filters}" />
+	</bean>
+
+
+    <!-- Mybatis session factory -->
+    <bean id="sqlSessionFactory" class="com.pinganfu.caps.common.util.spring.MySqlSessionFactoryBean"  >
+        <property name="dataSource" ref="dataSource" />
+        <property name="mapperLocations" value="classpath:sqlmapper/*Mapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="plugins">
+            <list>
+                <bean class="com.pinganfu.common.log.SQLLogInterceptor"/>
+                <bean class="com.pinganfu.common.pagination.PaginationInterceptor">
+                    <property name="dialect">
+                        <bean class="com.pinganfu.common.pagination.OracleDialect"/>
+                    </property>
+                </bean>
+                <!-- CAT DB拦截器 -->
+                <bean class="com.pinganfu.mobile.dubboplus.cat.mybatis.CatDBInterceptor"></bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" >
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transactionTemplate"
+          class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+</beans>

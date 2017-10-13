@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="D:\Users\yaolijun150\.m2\repository\oracle\jdbc\driver\ojdbc6\11.2.0\ojdbc6-11.2.0.jar" />
+	<context id="context1">
+
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="DOExample$" />
+			<property name="replaceString" value="Example" />
+		</plugin>
+		
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+		<jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver"
+			connectionURL="jdbc:oracle:thin:@192.168.1.18:1521:d0posb" userId="capsopr"
+			password="capsopr1234" />
+		
+		<javaModelGenerator targetPackage="com.pinganfu.caps.common.dal.model"
+			targetProject="caps-common-dal" />
+		
+		<sqlMapGenerator targetPackage="sqlmapper"
+			targetProject="caps-common-dal/src/main/resources">
+			<property name="fileName" value="CapsFileCheckConfigMapper.xml" />
+		</sqlMapGenerator>
+		
+		<javaClientGenerator targetPackage="com.pinganfu.caps.common.dal.dao"
+			targetProject="caps-common-dal" type="XMLMAPPER" />
+		
+		<table schema="" enableCountByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			enableUpdateByExample="false" tableName="CAPS_FILE_CHECK_CONFIG"
+			domainObjectName="CapsFileCheckConfig" />
+
+
+	</context>
+</generatorConfiguration>

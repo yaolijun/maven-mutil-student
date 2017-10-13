@@ -11,5 +11,18 @@
 
     <artifactId>ssm-service</artifactId>
 
+    <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.ssm</groupId>
+            <artifactId>ssm-util</artifactId>
+            <version>${ssm-util.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ssm</groupId>
+            <artifactId>ssm-dao</artifactId>
+            <version>${ssm-dao.version}</version>
+        </dependency>
+    </dependencies>
 </project>

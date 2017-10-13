@@ -10,6 +10,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ssm-core</artifactId>
+    <packaging>jar</packaging>
+
+    <!-- 添加对工具类的依赖 -->
+    <dependencies>
+        <dependency>
+            <groupId>com.ssm</groupId>
+            <artifactId>ssm-util</artifactId>
+            <version>${ssm-util.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ssm</groupId>
+            <artifactId>ssm-dao</artifactId>
+            <version>${ssm-dao.version}</version>
+        </dependency>
+    </dependencies>
 
 
 </project>

@@ -11,5 +11,7 @@
 
     <artifactId>ssm-util</artifactId>
 
+    <packaging>jar</packaging>
+
 
 </project>
